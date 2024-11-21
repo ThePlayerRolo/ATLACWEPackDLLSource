@@ -9,20 +9,23 @@ extern "C"
     void (*RegisterDataFunc)(void* ptr);
     //Lens function - Needed for CWE to recognize the lens.
     __declspec(dllexport) void(__cdecl* ALS_LensSpecial)(ObjectMaster*, ObjectMaster*);
-    NJS_TEXNAME ATLATEX[2];
+    NJS_TEXNAME ATLATEX[4];
     NJS_TEXLIST ATLATEXLIST = { arrayptrandlength(ATLATEX) };
     NJS_TEXNAME AVATARSTATELENSETEX[8];
     NJS_TEXLIST AVATARSTATELENSET_TEXLIST = { arrayptrandlength(AVATARSTATELENSETEX) };
     BlackMarketItemAttributes BMAangHeadBand = { 250, 100, 0, -1, -1, 0 };
+    BlackMarketItemAttributes BMGliderOpen = { 1000, 250, 0, -1, -1, 0 };
     BlackMarketItemAttributes BMSeaPrunes = { 350, 200, 0, -1, -1, 0 };
     BlackMarketItemAttributes BMAvatarStateLense = { 10, 100, 0, -1, -1, 0 };;
     ModelInfo* MDLAvatarStateLense;
     ChaoItemStats SeaPruneStats = { 10, 0, 100, 0, 0, 0, 100, 0, 0, 0 };
     ModelInfo* MDLSeaPrunes;
     ModelInfo* MDLAangHeadBand;
+    ModelInfo* MDLGliderOpen;
     int AangHeadBandID;
     int ATLASeaPrunesID;
     int AvatarStateLenseID;
+    int AangsGliderOpenID;
 
 
     void __cdecl SeaPrunesFunction(ChaoData* data, ObjectMaster* fruit)
@@ -39,11 +42,12 @@ extern "C"
         AangHeadBandID = cwe_api->RegisterChaoAccessory(Head, MDLAangHeadBand->getmodel(), &ATLATEXLIST, &BMAangHeadBand, "The Headband", "\"Hotmen. Hotmen. Hotmen. Hotmen. Hotmen.\" \" Its over, we caught you! \" \" Who, me?\"");
         ATLASeaPrunesID = cwe_api->RegisterChaoFruit(MDLSeaPrunes->getmodel(), &ATLATEXLIST, &SeaPruneStats, &BMSeaPrunes, SeaPrunesFunction, "Sea Prunes", "Normal Chao like this food all the same, Sokka and Katara enjoy it, and Aang HATES it.");
         AvatarStateLenseID = cwe_api->RegisterChaoSpecial(MDLAvatarStateLense->getmodel(), &AVATARSTATELENSET_TEXLIST, &BMAvatarStateLense, ALS_LensSpecial, NULL, "Avatar State Lenses", "Let your chao become the Avatar and enter the Avatar State!", false);
+        AangsGliderOpenID = cwe_api->RegisterChaoAccessory(Generic1, MDLGliderOpen->getmodel(), &ATLATEXLIST, &BMGliderOpen, "Aang's Glider", "One of the last things Aang has connecting him to his original people.");
         cwe_api->RegisterEyeColor("al_eye_1_avatar", &AVATARSTATELENSET_TEXLIST, AvatarStateLenseID);
         cwe_api->RegisterBlackMarketGeneralFruit(ATLASeaPrunesID, 50);
         
     }
-
+    //GliderOpen.sa2mdl
     //initialization function - MUST exist in order to have CWE and SA2 see your mod
     __declspec(dllexport) void Init(const char* path)
     {
@@ -54,6 +58,7 @@ extern "C"
         MDLAangHeadBand = new ModelInfo(pathStr + "The Headband.sa2mdl");
         MDLSeaPrunes = new ModelInfo(pathStr + "SeaPrunes.sa2mdl");
         MDLAvatarStateLense = new ModelInfo(pathStr + "Avatar State Lense.sa2mdl");
+        MDLGliderOpen = new ModelInfo(pathStr + "GliderOpen.sa2mdl");
         RegisterDataFunc = (void (*)(void* ptr))GetProcAddress(h, "RegisterDataFunc");
         RegisterDataFunc(CWELoad);
     }
